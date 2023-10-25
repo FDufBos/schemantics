@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "v2 Schema Generator",
-  description: "Drag and Drop JSON Gen",
+  title: "Schema builder",
+  description: "🐲",
 };
 
 export default function RootLayout({
