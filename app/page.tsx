@@ -246,8 +246,10 @@ export default function Home() {
 
                         setOutput((prevOutput) => {
                           const newFields = new Map(prevOutput.config.fields);
-                          newFields.set(newValue, newFields.get(value)); // Update the value in the fields map
-                          newFields.delete(value); // Remove the old value from the fields map
+                          if (!newFields.has(newValue)) {
+                            newFields.set(newValue, newFields.get(value)); // Update the value in the fields map
+                            newFields.delete(value); // Remove the old value from the fields map
+                          }
 
                           return {
                             ...prevOutput,
