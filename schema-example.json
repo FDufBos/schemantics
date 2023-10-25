@@ -1,0 +1,238 @@
+{
+  "type": "page",
+  "slug": "home",
+  "name": "Home",
+  "path": "",
+  "config": {
+    "fields": {
+      "hero_image": {
+        "type": "image",
+        "label": {
+          "en": "Hero Image"
+        }
+      },
+      "hero_content": {
+        "type": "wysiwyg",
+        "label": {
+          "en": "Hero Content"
+        }
+      },
+      "how_it_works": {
+        "type": "wysiwyg",
+        "label": {
+          "en": "How it Works"
+        }
+      },
+      "resource_hubs_title": {
+        "type": "string",
+        "label": {
+          "en": "title for resources section"
+        }
+      },
+      "resource_hubs_description": {
+        "type": "string",
+        "label": {
+          "en": "description for resources section"
+        }
+      },
+      "resource_hubs": {
+        "type": "list",
+        "label": {
+          "en": "List of resource hubs"
+        },
+        "fields": {
+          "image": {
+            "type": "image",
+            "label": {
+              "en": "Image"
+            }
+          },
+          "name": {
+            "type": "string",
+            "label": {
+              "en": "Title"
+            }
+          },
+          "description": {
+            "type": "text",
+            "label": {
+              "en": "Description"
+            }
+          },
+          "url": {
+            "type": "url",
+            "label": {
+              "en": "URL"
+            }
+          },
+          "cta": {
+            "type": "string",
+            "label": {
+              "en": "CTA"
+            }
+          }
+        }
+      },
+      "events_title": {
+        "type": "string",
+        "label": {
+          "en": "title for events section"
+        }
+      },
+      "events_description": {
+        "type": "string",
+        "label": {
+          "en": "description for events section"
+        }
+      },
+      "event_calendar": {
+        "type": "image",
+        "label": {
+          "en": "event calendar image"
+        }
+      },
+      "testimonial_bg": {
+        "type": "image",
+        "label": {
+          "en": "Background Image"
+        }
+      },
+      "testimonials": {
+        "type": "list",
+        "label": {
+          "en": "Testimonials"
+        },
+        "fields": {
+          "profile_picture": {
+            "type": "image",
+            "label": {
+              "en": "Profile Picture"
+            }
+          },
+          "testimonial": {
+            "type": "text",
+            "label": {
+              "en": "Description"
+            }
+          },
+          "author_name": {
+            "type": "string",
+            "label": {
+              "en": "Author Name"
+            }
+          },
+          "author_title": {
+            "type": "string",
+            "label": {
+              "en": "Author Title"
+            }
+          }
+        }
+      },
+      "schedule_title": {
+        "type": "wysiwyg",
+        "label": {
+          "en": "Title for schedule section"
+        }
+      },
+      "schedule_left_image": {
+        "type": "image",
+        "label": {
+          "en": "Image for left card of schedule"
+        }
+      },
+      "schedule_left_title": {
+        "type": "string",
+        "label": {
+          "en": "Title for left card of schedule section"
+        }
+      },
+      "schedule_left_url": {
+        "type": "url",
+        "label": {
+          "en": "url for left card on schedule section"
+        }
+      },
+      "schedule_left_url_name": {
+        "type": "string",
+        "label": {
+          "en": "url name for left card on schedule section"
+        }
+      },
+      "schedule_right_image": {
+        "type": "image",
+        "label": {
+          "en": "Image for right card of schedule"
+        }
+      },
+      "schedule_right_title": {
+        "type": "string",
+        "label": {
+          "en": "Title for left card of schedule section"
+        }
+      },
+      "schedule_right_url": {
+        "type": "url",
+        "label": {
+          "en": "url for right card on schedule section"
+        }
+      },
+      "schedule_right_url_name": {
+        "type": "string",
+        "label": {
+          "en": "url name for right card on schedule section"
+        }
+      },
+      "bigcard_hero_image": {
+        "type": "image",
+        "label": {
+          "en": "Big Card Hero Image"
+        }
+      },
+      "bigcard_join_title": {
+        "type": "string",
+        "label": {
+          "en": "Title for big card section"
+        }
+      },
+      "bigcard_join_subtitle": {
+        "type": "string",
+        "label": {
+          "en": "Subtitle for big card section"
+        }
+      },
+      "bigcard_join_url": {
+        "type": "url",
+        "label": {
+          "en": "url for big card section"
+        }
+      },
+      "bigcard_join_url_name": {
+        "type": "string",
+        "label": {
+          "en": "url name for big card section"
+        }
+      },
+      "sponsors_title": {
+        "type": "string",
+        "label": {
+          "en": "Title for sponsors section"
+        }
+      },
+      "sponsors": {
+        "type": "list",
+        "label": {
+          "en": "Sponsors"
+        },
+        "fields": {
+          "image": {
+            "type": "image",
+            "label": {
+              "en": "Image"
+            }
+          }
+        }
+      }
+    }
+  }
+}
