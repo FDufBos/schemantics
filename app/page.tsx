@@ -175,7 +175,8 @@ export default function Home() {
       allItems.some(
         (item, itemIndex) =>
           itemIndex !== index &&
-          (item === newValue || (item.value && item.value === newValue))
+          (item === newValue ||
+            (typeof item === "object" && item.value === newValue))
       ) ||
       listItems.has(newValue)
     ) {
@@ -183,16 +184,15 @@ export default function Home() {
     }
 
     setOutput((prevOutput) => {
-      const newFieldsArray = Array.from(prevOutput.config.fields.entries()).map(
-        ([key, value]) => {
-          // Check if the item is a list item
-          if (typeof oldValue === "object" && oldValue.type === "list") {
-            return key === oldValue.value ? [newValue, value] : [key, value];
-          } else {
-            return key === oldValue ? [newValue, value] : [key, value];
-          }
+      const newFieldsArray: Array<[string, any]> = Array.from(
+        prevOutput.config.fields.entries()
+      ).map(([key, value]): [string, any] => {
+        if (typeof oldValue === "object" && oldValue.type === "list") {
+          return key === oldValue.value ? [newValue, value] : [key, value];
+        } else {
+          return key === oldValue ? [newValue, value] : [key, value];
         }
-      );
+      }) as Array<[string, any]>;
       const newFields = new Map(newFieldsArray);
 
       return {
