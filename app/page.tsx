@@ -224,6 +224,7 @@ export default function Home() {
       });
     }
   };
+
   return (
     <main className="flex flex-col items-center w-full bg-slate-50">
       <section className="flex justify-center w-full gap-8 px-4 min-h-[calc(100vh+100vh)]">
@@ -270,10 +271,12 @@ export default function Home() {
           </div>
           <ItemList
             items={allItems}
+            setItems={setAllItems}
             onItemChange={handleItemChange}
             onItemBlur={handleItemBlur}
             output={output}
             fieldTypeColors={fieldTypeColors}
+            setOutput={setOutput}
           />
         </div>
         <div className="min-h-screen w-[40%] bg-slate-100 border- border-gray-50 mt-8 rounded-t-lg text-xs text-slate-700 p-4 pb-32">
