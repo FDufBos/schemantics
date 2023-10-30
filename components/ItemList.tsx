@@ -20,6 +20,7 @@ import {
 } from "@dnd-kit/sortable";
 
 import { CSS } from "@dnd-kit/utilities";
+import { GripVertical } from "lucide-react";
 
 type FieldTypeColors = {
   [key: string]: {
@@ -60,7 +61,7 @@ interface ItemListProps {
   ) => void;
   fieldTypeColors: FieldTypeColors;
   output: any;
-  setOutput;
+  setOutput: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const ItemComponent: React.FC<ItemProps> = ({
@@ -72,8 +73,10 @@ const ItemComponent: React.FC<ItemProps> = ({
   fieldTypeColors,
   output,
 }) => {
-  const value = typeof item === "string" ? item : item.value;
-  const fieldType = output.config.fields.get(value)?.type;
+  const initialInputValue = typeof item === "string" ? item : item.value;
+  const [inputValue, setInputValue] = React.useState(initialInputValue);
+
+  const fieldType = output.config.fields.get(inputValue)?.type;
   const colors = fieldTypeColors[fieldType as keyof typeof fieldTypeColors];
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -81,6 +84,15 @@ const ItemComponent: React.FC<ItemProps> = ({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleInputBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onItemBlur(event, index);
+    onItemChange(event, index);
   };
 
   return (
@@ -92,24 +104,14 @@ const ItemComponent: React.FC<ItemProps> = ({
           {fieldType}
         </span>
         <div className="flex items-center gap-1 cursor-grab active:cursor-grabbing">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            className="row-grabber"
-            {...listeners}
-          >
-            <path
-              fill="#E4E6EA"
-              d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2s2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2s-2 .9-2 2s.9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2z"
-            />
-          </svg>
+          <span {...listeners} className="text-gray-300 ">
+            <GripVertical />
+          </span>
           <Input
             type="text"
-            value={value}
-            onChange={(event) => onItemChange(event, index)}
-            onBlur={(event) => onItemBlur(event, index)}
+            value={inputValue}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
           />
         </div>
       </div>
@@ -136,42 +138,47 @@ export const ItemList: React.FC<ItemListProps> = ({
     })
   );
 
-  // Inside your ItemList component
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event;
 
       if (active.id !== over?.id) {
         setItems((items) => {
-          const oldIndex = items.findIndex(
-            (item) => item === active.id || item.value === active.id
-          );
-          const newIndex = items.findIndex(
-            (item) => item === over?.id || item.value === over?.id
-          );
+          const oldIndex = items.findIndex((item) => {
+            const id = typeof item === "string" ? item : item.value;
+            return String(id) === String(active.id);
+          });
+          const newIndex = items.findIndex((item) => {
+            const id = typeof item === "string" ? item : item.value;
+            return String(id) === String(over?.id);
+          });
 
           const newItems = arrayMove(items, oldIndex, newIndex);
 
-          // Update the output state to reflect the new order of items
-          setOutput((prevOutput) => {
-            const newFieldsArray: Array<[string, any]> = newItems.map(
-              (item) => {
-                const id = typeof item === "string" ? item : item.value;
-                const value = prevOutput.config.fields.get(id);
-                return [id, value];
+          setOutput(
+            (
+              prevOutput: typeof output & {
+                config: { fields: Map<string, any> };
               }
-            );
-            const newFields = new Map(newFieldsArray);
+            ) => {
+              const newFieldsArray: Array<[string, any]> = newItems.map(
+                (item) => {
+                  const id = typeof item === "string" ? item : item.value;
+                  const value = prevOutput.config.fields.get(id);
+                  return [id, value];
+                }
+              );
+              const newFields = new Map(newFieldsArray);
 
-            return {
-              ...prevOutput,
-              config: {
-                ...prevOutput.config,
-                fields: newFields,
-              },
-            };
-          });
-
+              return {
+                ...prevOutput,
+                config: {
+                  ...prevOutput.config,
+                  fields: newFields,
+                },
+              };
+            }
+          );
           return newItems;
         });
       }
@@ -179,7 +186,6 @@ export const ItemList: React.FC<ItemListProps> = ({
     [setItems, setOutput]
   );
 
-  // Map allItems to an array of unique string identifiers
   const itemIds = items.map((item, index) =>
     typeof item === "string" ? item : item.value
   );
@@ -194,11 +200,11 @@ export const ItemList: React.FC<ItemListProps> = ({
         <div className="flex flex-col gap-2 px-4 py-2">
           {items.map((item, index) => {
             // Generate a unique id for each item
-            const id = typeof item === "string" ? item : item.value;
+            const id = typeof item === "object" ? item.value : item;
 
             return (
               <Item
-                key={`${id}`}
+                key={id}
                 id={id}
                 item={item}
                 index={index}
