@@ -95,32 +95,16 @@ export default function Home() {
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    // Get the new value from the event and replace spaces with underscores
-    let newValue = event.target.value.replace(/\s/g, "_");
-
-    // Get the old value from the allItems array using the index
-    const oldValue = allItems[index];
-
-    // Check if the new value already exists in allItems or listItems
-    // If it does, append a timestamp to make it unique
-    if (allItems.includes(newValue) || listItems.has(newValue)) {
-      newValue = `${newValue}_${Date.now()}`;
-    }
+    // Get the new value from the event
+    const newValue = event.target.value;
 
     // Update the output state
     setOutput((prevOutput) => {
       // Create a new array from the entries of the fields map in the previous output
-      // For each entry, check if the key matches the old value
-      // If it does, replace the key with the new value
-      // If it doesn't, keep the key as it is
       const newFieldsArray: Array<[string, any]> = Array.from(
         prevOutput.config.fields.entries()
       ).map(([key, value]): [string, any] => {
-        if (typeof oldValue === "object" && oldValue.type === "list") {
-          return key === oldValue.value ? [newValue, value] : [key, value];
-        } else {
-          return key === oldValue ? [newValue, value] : [key, value];
-        }
+        return key === allItems[index] ? [newValue, value] : [key, value];
       });
 
       const newFields = new Map(newFieldsArray);
@@ -136,31 +120,11 @@ export default function Home() {
     });
 
     // Update the allItems state
-    // For each item, check if the index matches the index of the changed item
-    // If it does, replace the item with the new value
-    // If it doesn't, keep the item as it is
     setAllItems((prevAllItems) =>
       prevAllItems.map((item, itemIndex) =>
         itemIndex === index ? newValue : item
       )
     );
-
-    // If the old value is a list item, update the listItems state
-    if (typeof oldValue === "object" && oldValue.type === "list") {
-      setListItems((prevListItems) => {
-        // Create a new map from the previous list items
-        const newListItems = new Map(prevListItems);
-
-        // Set the new value in the new list items map to the value of the old value
-        newListItems.set(newValue, newListItems.get(oldValue.value));
-
-        // Delete the old value from the new list items map
-        newListItems.delete(oldValue.value);
-
-        // Return the new list items map
-        return newListItems;
-      });
-    }
   };
 
   const handleItemBlur = (
